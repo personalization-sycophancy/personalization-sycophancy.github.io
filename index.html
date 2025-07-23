@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Personalization Methods Should Address Sycophancy Risks to Improve LLM Alignment</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@100;300;400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans', sans-serif;
+            color: #333;
+            line-height: 1.6;
+            background-color: #ffffff;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Section */
+        .publication-header {
+            text-align: center;
+            padding: 60px 0 40px;
+            background-color: #f8f9fa;
+        }
+        
+        .publication-title {
+            font-size: 42px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 30px;
+            line-height: 1.2;
+        }
+        
+        .authors {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .author-name {
+            color: #2c5aa0;
+            text-decoration: none;
+            margin: 0 8px;
+        }
+        
+        .author-name:hover {
+            text-decoration: underline;
+        }
+        
+        .affiliations {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .affiliation {
+            display: inline-block;
+            margin: 0 10px;
+        }
+        
+        .affiliation sup {
+            font-size: 12px;
+        }
+        
+        .corresponding {
+            font-size: 14px;
+            color: #666;
+            font-style: italic;
+        }
+        
+        /* Header Links */
+        .header-links {
+            margin-top: 30px;
+        }
+        
+        .header-link-button {
+            display: inline-block;
+            margin: 0 10px;
+            padding: 10px 20px;
+            background-color: #2c5aa0;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+        
+        .header-link-button:hover {
+            background-color: #1e3d6c;
+        }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 30px;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 600px;
+            position: relative;
+        }
+        
+        .modal-content h3 {
+            margin-bottom: 20px;
+            color: #1a1a1a;
+        }
+        
+        .modal-content pre {
+            background-color: #f5f5f5;
+            padding: 20px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 20px;
+        }
+        
+        .close:hover,
+        .close:focus {
+            color: #000;
+        }
+        
+        .copy-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #2c5aa0;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .copy-button:hover {
+            background-color: #1e3d6c;
+        }
+        
+        /* Main Figure Section */
+        .main-figure {
+            background-color: #fff;
+            padding: 40px 0;
+            text-align: center;
+        }
+        
+        .figure-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .figure-image {
+            width: 100%;
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .figure-caption {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #666;
+            text-align: left;
+            line-height: 1.5;
+        }
+        
+        /* Abstract Section */
+        .abstract-section {
+            padding: 40px 0;
+            background-color: #fff;
+        }
+        
+        .section-title {
+            font-size: 32px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .abstract-content {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #333;
+            text-align: justify;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* Footer */
+        .footer {
+            padding: 30px 0;
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            background-color: #fff;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .publication-title {
+                font-size: 28px;
+            }
+            
+            .authors {
+                font-size: 16px;
+            }
+            
+            .author-name {
+                display: block;
+                margin: 5px 0;
+            }
+            
+            .affiliation {
+                display: block;
+                margin: 5px 0;
+            }
+            
+            .abstract-content {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="publication-header">
+        <div class="container">
+            <h1 class="publication-title">
+                Personalization Methods Should Address<br>
+                Sycophancy Risks to Improve LLM Alignment
+            </h1>
+            
+            <div class="authors">
+                <a href="#" class="author-name">Sriram Tolety<sup>1</sup></a>
+                <a href="#" class="author-name">Daniel Mika<sup>2</sup></a>
+                <a href="#" class="author-name">Aalok Patwa<sup>2</sup></a>
+                <a href="#" class="author-name">Keshav Ramji<sup>3</sup></a>
+            </div>
+            
+            <div class="affiliations">
+                <span class="affiliation"><sup>1</sup>New York University</span>
+                <span class="affiliation"><sup>2</sup>University of Pennsylvania</span>
+                <span class="affiliation"><sup>3</sup>IBM Research AI</span>
+            </div>
+            
+            <div class="corresponding">
+                sriram.tolety@nyu.edu, dmika@wharton.upenn.edu,<br>
+                apatwa@wharton.upenn.edu, keshav.ramji@ibm.com
+            </div>
+            
+            <div class="header-links">
+                <a href="#" class="header-link-button">Paper (PDF)</a>
+                <a href="#" class="header-link-button" onclick="showBibTeX(); return false;">BibTeX</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- BibTeX Modal -->
+    <div id="bibtex-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeBibTeX()">&times;</span>
+            <h3>BibTeX</h3>
+            <pre id="bibtex-text">@article{tolety2025personalization,
+  title={Personalization Methods Should Address Sycophancy Risks to Improve LLM Alignment},
+  author={Tolety, Sriram and Mika, Daniel and Patwa, Aalok and Ramji, Keshav},
+  year={2025}
+}</pre>
+            <button class="copy-button" onclick="copyBibTeX()">Copy to Clipboard</button>
+        </div>
+    </div>
+    
+    <!-- Main Figure -->
+    <div class="main-figure">
+        <div class="container">
+            <div class="figure-container">
+                <img src="assets/main-figure.png" alt="Personalization vs Sycophancy Spectrum" class="figure-image">
+                <p class="figure-caption">
+                    <strong>Figure 1:</strong> Well-aligned personalized LLM responses are more objective and truthful than sycophantic ones. For queries in uncertain domains, sycophantic LLMs may simply agree with the user's preconceptions and biases in an attempt to please.
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Abstract -->
+    <div class="abstract-section">
+        <div class="container">
+            <h2 class="section-title">Abstract</h2>
+            <p class="abstract-content">
+                Personalization of modern AI systems is a rapidly advancing frontier, driven by user demand and commercial incentives to enhance engagement and utility. We argue that current approaches to personalization, which often optimize for user satisfaction via mechanisms like Reinforcement Learning from Human Feedback (RLHF), can conflate beneficial adaptation with 'sycophancy.' This position paper posits that such sycophancy, particularly its latent forms in subjective or ambiguous contexts, is a distinct and under-appreciated challenge extending beyond easily detectable factual inaccuracies. While pluralistic alignment is a notable objective, we must ensure that the adaptability of models is balanced with controls to avoid undesirable behavior. Naively pursuing personalization can inadvertently foster models that reinforce biases and erode epistemic integrity, a critical risk given society's growing dependence on these systems for knowledge acquisition. We call for a clear differentiation between genuine personalization and sycophantic behavior, and outline crucial research directions to navigate this tension and enable the development of models that are both highly adaptive and epistemically sound.
+            </p>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <div class="footer">
+        <div class="container">
+            <p>&copy; 2025 Personalization Methods Should Address Sycophancy Risks Authors. All rights reserved.</p>
+        </div>
+    </div>
+    
+    <script>
+        function showBibTeX() {
+            document.getElementById('bibtex-modal').style.display = 'block';
+        }
+        
+        function closeBibTeX() {
+            document.getElementById('bibtex-modal').style.display = 'none';
+        }
+        
+        function copyBibTeX() {
+            const bibtexText = document.getElementById('bibtex-text').innerText;
+            navigator.clipboard.writeText(bibtexText).then(function() {
+                alert('BibTeX copied to clipboard!');
+            }, function(err) {
+                console.error('Could not copy text: ', err);
+            });
+        }
+        
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById('bibtex-modal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
